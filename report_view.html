@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distribution Expenses Report</title>
+    <!-- Include any necessary CSS or JavaScript libraries for charts here -->
+</head>
+<body>
+    <h1>Distribution Expenses Report</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Total Expenses</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>
+                        {# Calculate and display total expenses for this category #}
+                        {% with category_expenses=0 %}
+                            {% for book in books %}
+                                {% if book.category == category %}
+                                    {% with category_expenses=category_expenses+book.distribution_expenses %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                        ${{ category_expenses|floatformat:2 }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'book_list' %}">Back to Books</a>
+</body>
+</html>
